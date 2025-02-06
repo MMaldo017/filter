@@ -67,3 +67,56 @@ const displayProducts = (filteredProducts) => {
 }
 
 displayProducts(data);
+//add event listener for the search input to filter the products based on user input
+
+
+searchInput.addEventListener("keyup", (e)=> {
+  const value = e.target.value.toLowerCase();
+
+  if(value){
+    //filters the products that contain the search text
+    displayProducts(data.filter(item => item.name.toLocaleLowerCase().indexOf(value) !== -1))
+  }else{
+    displayProducts(data)
+  }
+})
+
+
+//Display categories as clickable span tags
+
+//function to diplay all the categories
+
+const setCategories = () => {
+
+    const allCats = data.map(item => item.cat)
+    const categories = [
+      "All", //add all as the first category for displaying all products
+      ...allCats.filter((item, i)=>{ //...is a spreader that combines arrays
+        return allCats.indexOf(item) === i
+      })
+    ]
+//Display categories as clickable span tags
+categoriesContainer.innerHTML = categories.map(cat=>
+  `
+  <span class='cat'>${cat}</span>
+  `
+
+).join('')
+
+//Event listener for category filtering
+categoriesContainer.addEventListener("click", (e)=>{
+  const selectedCat = e.target.textContent;
+
+  if(selectedCat === 'All'){
+    displayProducts(data)
+  }else{
+    //filter products based on the selected category.
+    displayProducts(data.filter(item =>
+      item.cat === selectedCat
+    ))
+  }
+})
+
+}
+
+setCategories();
